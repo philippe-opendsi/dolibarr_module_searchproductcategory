@@ -59,30 +59,38 @@ class ActionsSearchProductCategory
 	 * @param   HookManager     $hookmanager    Hook manager propagated to allow calling another hook
 	 * @return  int                             < 0 on error, 0 on success, 1 to replace standard code
 	 */
-	function doActions($parameters, &$object, &$action, $hookmanager)
-	{
-		$error = 0; // Error counter
-		$myvalue = 'test'; // A result value
+	function formAddObjectLine ($parameters, &$object, &$action, $hookmanager) {
+		
+		global $db,$langs,$user,$conf;
 
-		print_r($parameters);
-		echo "action: " . $action;
-		print_r($object);
+		if ($parameters['currentcontext'] == 'propalcard' || $parameters['currentcontext'] == 'ordercard' || $parameters['currentcontext'] == 'invoicecard') 
+        {
+        	
+			if($user->rights->searchproductcategory->user->search) {
+        	//Charger les liste des projets de type feuille de temps pas encore facturé
+        	
+	        	$langs->load('searchproductcategory@searchproductcategory');
 
-		if (in_array('somecontext', explode(':', $parameters['context'])))
-		{
-		  // do something only for the context 'somecontext'
-		}
+	        	?>
+				<tr class="liste_titre nodrag nodrop">
+					<td colspan="9"><?php echo $langs->trans('SearchByCategory') ?></td>
+					<td></td>
+				</tr>
+				<tr class="pair">
+					<td colspan="7">
+						<div id="arboresenceCategoryProduct" spc-role="arbo-multiple">
+							
+						</div>
+					</td>
+					<td valign="middle" align="center">
+						<input id="addline_spc" class="button" type="button" name="addline_timesheet" value="<?php echo $langs->trans('Add') ?>">
+					</td>
+				</tr>
+				<?php				
+			}
 
-		if (! $error)
-		{
-			$this->results = array('myreturn' => $myvalue);
-			$this->resprints = 'A text to show';
-			return 0; // or return 1 to replace standard code
-		}
-		else
-		{
-			$this->errors[] = 'Error message';
-			return -1;
-		}
+        }
+
+		return 0;
 	}
 }
