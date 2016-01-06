@@ -6,7 +6,6 @@
 ?>
 var spc_line_class = 'even';
 $(document).ready(function() {
-	
 	$search = $('<span><a href="javascript:;" onclick="openSearchProductByCategory(this)"><?php echo img_picto($langs->trans('SearchByCategory'), 'object_searchproductcategory.png@searchproductcategory') ?></a></span>');
 	
 	if($('input#search_idprod').length>0) {
@@ -23,23 +22,28 @@ $(document).ready(function() {
 	$('#addline_spc').click(function() {
 		$(this).after('<span class="loading"><?php echo img_picto('', 'working.gif') ?></span>');
 		$(this).hide();
-		
 		TProduct=[];
+		$('input.checkSPC:checked').each(function(i,item){
+			TProduct.push( $(item).attr('fk_product') );
+		});
 		
 		$.ajax({
 			url:"<?php echo dol_buildpath('/searchproductcategory/script/interface.php',1) ?>"
 			,data:{
 				put:"addline"
 				,TProduct:TProduct
+				,object_type:spc_object_type
+				,object_id:spc_object_id
+				,qty:$('#qty_spc').val()
 			}
+			,method:'post'
 			,dataType:'json'	
 		}).done(function(data) {
 			
 			document.location.href=document.location.href;
 			
 		});
-	
-	
+	});
 });
 
 function openSearchProductByCategory(a) {
@@ -96,7 +100,7 @@ function getArboSPC(fk_parent, container) {
 			
 			$.each(data.TProduct,function(i,item) {
 				spc_line_class = (spc_line_class == 'even') ? 'odd' : 'even';
-				$li = $('<li class="product '+spc_line_class+'" productid="'+item.id+'"><input type="checkbox" value="1" name="TProductSPCtoAdd['+item.id+']" /> <a href="javascript:checkProductSPC('+item.id+')" >'+item.label+'</a> <a class="addToForm" href="javascript:;" onclick="addProductSPC('+item.id+',\''+item.label.replace(/\'/g, "&quot;")+'\')"><?php echo img_right($langs->trans('SelectThisProduct')) ?></a></li>');
+				$li = $('<li class="product '+spc_line_class+'" productid="'+item.id+'"><input type="checkbox" value="1" name="TProductSPCtoAdd['+item.id+']" fk_product="'+item.id+'" class="checkSPC" /> <a class="checkIt" href="javascript:;" onclick="checkProductSPC('+item.id+')" >'+item.label+'</a> <a class="addToForm" href="javascript:;" onclick="addProductSPC('+item.id+',\''+item.label.replace(/\'/g, "&quot;")+'\')"><?php echo img_right($langs->trans('SelectThisProduct')) ?></a></li>');
 				$ul.append($li);
 			});
 		}
@@ -105,11 +109,19 @@ function getArboSPC(fk_parent, container) {
 		container.append($ul);
 		
 		$('#arboresenceCategoryProduct').find('a.addToForm').remove();
+		$("div#popSearchProductByCategory").find('input[type=checkbox]').remove();
+		$("div#popSearchProductByCategory").find('a.checkIt').attr('onclick', $("div#popSearchProductByCategory").find('a.addToForm').attr('onclick') );
 	});
 }
 
 function checkProductSPC(fk_product) {
-	$('input[name="TProductSPCtoAdd['+fk_product+']"]').prop('checked',true);
+	if( $('input[name="TProductSPCtoAdd['+fk_product+']"]').is(':checked') ) {
+		$('input[name="TProductSPCtoAdd['+fk_product+']"]').prop('checked',false);
+	}
+	else {
+		$('input[name="TProductSPCtoAdd['+fk_product+']"]').prop('checked',true);	
+	}
+	
 }
 
 function addProductSPC(fk_product,label) {

@@ -4,6 +4,7 @@
 	require '../config.php';
 	dol_include_once('/categories/class/categorie.class.php');
 	dol_include_once('/product/class/product.class.php');
+	dol_include_once('/comm/propal/class/propal.class.php');
 	
 	$get=GETPOST('get');
 	$put=GETPOST('put');
@@ -18,6 +19,38 @@
 			
 			__out($Tab,'json');
 					
+			break;
+	}
+	
+	switch ($put) {
+		case 'addline':
+			
+			$object_type=GETPOST('object_type');
+			$object_id=(int)GETPOST('object_id');
+			$qty=(float)GETPOST('qty');
+			$TProduct=GETPOST('TProduct');
+			$txtva=(float)GETPOST('txtva');
+			
+			if(!empty($TProduct)) {
+				//$o=new $object_type($db);
+				$o=new Propal($db);
+				$o->fetch($object_id);
+				
+				foreach($TProduct as $fk_product) {
+					$p=new Product($db);
+					$p->fetch($fk_product);
+					
+					$o->addline($p->description, $p->price, $qty, $txtva,0,0,$fk_product);
+				}
+				
+				
+			}
+			
+			echo 1;
+			
+			break;
+		default:
+			
 			break;
 	}
 

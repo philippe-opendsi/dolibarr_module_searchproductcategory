@@ -68,10 +68,13 @@ class ActionsSearchProductCategory
         	
 			if($user->rights->searchproductcategory->user->search) {
         	//Charger les liste des projets de type feuille de temps pas encore facturé
-        	
+	
 	        	$langs->load('searchproductcategory@searchproductcategory');
 
-	        	?>
+	        	?><script type="text/javascript">
+	        		var spc_object_type = '<?php echo $object->element ?>';
+	        		var spc_object_id = '<?php echo $object->id ?>';
+	        	</script>
 				<tr class="liste_titre nodrag nodrop">
 					<td colspan="9"><?php echo $langs->trans('SearchByCategory') ?></td>
 					<td></td>
@@ -83,6 +86,7 @@ class ActionsSearchProductCategory
 						</div>
 					</td>
 					<td valign="middle" align="center">
+						<input id="qty_spc" type="text" value="1" size="5" class="flat" />
 						<input id="addline_spc" class="button" type="button" name="addline_timesheet" value="<?php echo $langs->trans('Add') ?>">
 					</td>
 				</tr>
