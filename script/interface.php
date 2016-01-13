@@ -12,8 +12,11 @@
 	switch ($get) {
 		case 'categories':
 			$fk_parent = (int)GETPOST('fk_parent');
+			$keyword= GETPOST('keyword');
+			
+			
 			$Tab =array(
-				'TCategory'=>_categories($fk_parent)
+				'TCategory'=>_categories($fk_parent, $keyword)
 				,'TProduct'=>_products($fk_parent)
 			);
 			
@@ -67,16 +70,27 @@ function _products($fk_parent=0) {
 	return $TProd;
 }
 
-function _categories($fk_parent=0) {
+function _categories($fk_parent=0, $keyword='') {
 	global $db;
-	
-	$parent = new Categorie($db);
-	if(empty($fk_parent)) {
-		$TFille = $parent->get_all_categories(0,true);	
+	$TFille=array();
+	if(!empty($keyword)) {
+		$resultset = $db->query("SELECT rowid FROM ".MAIN_DB_PREFIX."categorie WHERE label LIKE '%".addslashes($keyword)."%' ORDER BY label");		
+		while($obj = $db->fetch_object($resultset)) {
+			$cat = new Categorie($db);
+			$cat->fetch($obj->rowid);
+			$TFille[] = $cat;
+		}
 	}
 	else {
-		$parent->fetch($fk_parent);
-		$TFille = $parent->get_filles();
+		$parent = new Categorie($db);
+		if(empty($fk_parent)) {
+			$TFille = $parent->get_all_categories(0,true);	
+		}
+		else {
+			$parent->fetch($fk_parent);
+			$TFille = $parent->get_filles();
+		}
+		
 	}
 	
 	

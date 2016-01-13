@@ -3,6 +3,8 @@
 
 	if(empty($user->rights->searchproductcategory->user->search)) exit;
 
+	$langs->load('searchproductcategory@searchproductcategory');
+
 ?>
 var spc_line_class = 'even';
 $(document).ready(function() {
@@ -61,7 +63,7 @@ function openSearchProductByCategory(a) {
 		$( "div#popSearchProductByCategory" ).dialog({
 	      modal: true,
 	      autoOpen: false,
-	      title:"<?php echo $langs->trans('SearchByCategory'); ?>",
+	      title:"<?php echo $langs->transnoentities('SearchByCategory'); ?>",
 	      width:"80%",
 	      buttons: {
 	        "<?php echo $langs->trans('Cancel'); ?>": function() {
@@ -80,7 +82,13 @@ function openSearchProductByCategory(a) {
 	$pop.dialog('open');
 	
 }
-function getArboSPC(fk_parent, container) {
+function searchCategorySPC(a) {
+	
+	var keyword = $(a).prev('input[name=spc_keyword]').val();
+	getArboSPC(0, $("div#arboresenceCategoryProduct,div#popSearchProductByCategory div.arbo"), keyword) ;
+	
+}
+function getArboSPC(fk_parent, container,keyword) {
 	
 	container.find('ul.tree').remove();
 	container.append('<span class="loading"><?php echo img_picto('', 'working.gif') ?></span>');
@@ -90,6 +98,7 @@ function getArboSPC(fk_parent, container) {
 		,data:{
 			get:"categories"
 			,fk_parent:fk_parent
+			,keyword:keyword
 		}
 		,dataType:'json'	
 	}).done(function(data) {
@@ -149,7 +158,9 @@ function addProductSPC(fk_product,label) {
 function initSearchProductByCategory(selector) {
 	
 	$arbo = $( selector );
-	$arbo.html('<ul class="tree"><?php echo img_picto('', 'working.gif') ?></ul>');
+	$arbo.html();
+	$arbo.append('<div><input type="text" value="" name="spc_keyword" size="10" /> <a href="javascript:;" onclick="searchCategorySPC(this)"><?php echo img_picto('','search'); ?></a></div>');
+	$arbo.append('<ul class="tree"><?php echo img_picto('', 'working.gif') ?></ul>');
 	
 	getArboSPC(0, $arbo);
 }
