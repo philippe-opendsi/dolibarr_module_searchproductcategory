@@ -17,6 +17,13 @@ $(document).ready(function() {
 		
 	}
 	
+	if($('select#idprod').length>0) {
+		
+		$search.find('a').attr('related','select#idprod');
+		$('select#idprod').after($search);
+	
+	}
+	
 	initSearchProductByCategory("div#arboresenceCategoryProduct");
 	
 	$('#addline_spc').click(function() {

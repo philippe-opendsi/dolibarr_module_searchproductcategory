@@ -90,6 +90,7 @@ class modSearchProductCategory extends DolibarrModules
 		$this->module_parts = array(
 			'hooks' => array('propalcard','ordercard','invoicecard','globalcard')
 			,'js'=>array('/searchproductcategory/js/searchproductcategory.js.php')
+			,'css'=>array('/searchproductcategory/css/searchproductcategory.css')
 		);
 
 		// Data directories to create when module is enabled.
