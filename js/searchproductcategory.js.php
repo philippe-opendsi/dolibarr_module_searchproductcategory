@@ -18,12 +18,14 @@ $(document).ready(function() {
 		$('input#search_idprod').after($search);
 		
 	}
-	
-	if($('select#idprod').length>0) {
+	else if($('select#idprod').length>0) {
 		
 		$search.find('a').attr('related','select#idprod');
 		$('select#idprod').after($search);
 	
+	}
+	else {
+		return false;
 	}
 	
 	initSearchProductByCategory("div#arboresenceCategoryProduct");
