@@ -63,7 +63,9 @@ class ActionsSearchProductCategory
 		
 		global $db,$langs,$user,$conf;
 
-		if ($parameters['currentcontext'] == 'propalcard' || $parameters['currentcontext'] == 'ordercard' || $parameters['currentcontext'] == 'invoicecard') 
+		$TContext = explode(':',$parameters['context']);
+
+		if (in_array('propalcard',$TContext) || in_array('ordercard',$TContext) || in_array('invoicecard',$TContext)) 
         {
         	
 			if($user->rights->searchproductcategory->user->search) {
