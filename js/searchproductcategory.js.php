@@ -108,7 +108,14 @@ function getArboSPC(fk_parent, container,keyword) {
 		$ul = $('<ul class="tree" fk_parent="'+fk_parent+'"></ul>');
 		
 		if(data.TCategory.length == 0 && data.TProduct.length ==0) {
-			$ul.append('<li class="none '+spc_line_class+'"><?php echo $langs->trans('NothingHere'); ?></li>');
+			$ul.append('<li class="none '+spc_line_class+'"><?php 
+				if(!empty($conf->global->SPC_DO_NOT_LOAD_PARENT_CAT)) {
+					echo $langs->trans('DoASearch');						
+				}
+				else {
+					echo $langs->trans('NothingHere');	
+				}
+			?></li>');
 		}
 		else {
 			$.each(data.TCategory,function(i,item) {

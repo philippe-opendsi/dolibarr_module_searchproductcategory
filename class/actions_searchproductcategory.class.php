@@ -70,6 +70,8 @@ class ActionsSearchProductCategory
         	
 			if($user->rights->searchproductcategory->user->search) {
         	//Charger les liste des projets de type feuille de temps pas encore facturé
+				$colspan=7;
+				if($conf->margin->enabled)$colspan+=2;
 	
 	        	$langs->load('searchproductcategory@searchproductcategory');
 
@@ -82,7 +84,7 @@ class ActionsSearchProductCategory
 					<td></td>
 				</tr>
 				<tr class="pair">
-					<td colspan="7">
+					<td colspan="<?php echo $colspan; ?>">
 						<div id="arboresenceCategoryProduct" spc-role="arbo-multiple">
 							
 						</div>

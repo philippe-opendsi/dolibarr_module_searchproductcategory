@@ -7,3 +7,5 @@ SearchProductCategorySetup = Configuration du module SearchProductCategory
 SearchProductCategoryAbout = A propos du module SearchProductCategory
 SearchByCategory=Recherche par catégorie
 NothingHere=Pas de sous-catégorie ou de produit
+set_SPC_DO_NOT_LOAD_PARENT_CAT=Ne pas afficher les catégories racine par défaut
+DoASearch=Faites une recherche/Pas de résultat pour votre recherche

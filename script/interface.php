@@ -71,7 +71,7 @@ function _products($fk_parent=0) {
 }
 
 function _categories($fk_parent=0, $keyword='') {
-	global $db;
+	global $db,$conf;
 	$TFille=array();
 	if(!empty($keyword)) {
 		$resultset = $db->query("SELECT rowid FROM ".MAIN_DB_PREFIX."categorie WHERE label LIKE '%".addslashes($keyword)."%' ORDER BY label");		
@@ -84,7 +84,10 @@ function _categories($fk_parent=0, $keyword='') {
 	else {
 		$parent = new Categorie($db);
 		if(empty($fk_parent)) {
-			$TFille = $parent->get_all_categories(0,true);	
+			if(empty($conf->global->SPC_DO_NOT_LOAD_PARENT_CAT)) {
+				$TFille = $parent->get_all_categories(0,true);	
+			}
+				
 		}
 		else {
 			$parent->fetch($fk_parent);
