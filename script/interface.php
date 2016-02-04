@@ -5,6 +5,7 @@
 	dol_include_once('/categories/class/categorie.class.php');
 	dol_include_once('/product/class/product.class.php');
 	dol_include_once('/comm/propal/class/propal.class.php');
+	dol_include_once('/commande/class/commande.class.php');
 	
 	$get=GETPOST('get');
 	$put=GETPOST('put');
@@ -35,15 +36,15 @@
 			$txtva=(float)GETPOST('txtva');
 			
 			if(!empty($TProduct)) {
-				//$o=new $object_type($db);
-				$o=new Propal($db);
+				$o=new $object_type($db);
+				//$o=new Propal($db);
 				$o->fetch($object_id);
 				
 				foreach($TProduct as $fk_product) {
 					$p=new Product($db);
 					$p->fetch($fk_product);
 					
-					$o->addline($p->description, $p->price, $qty, $txtva,0,0,$fk_product);
+					$res = $o->addline($p->description, $p->price, $qty, $txtva,0,0,$fk_product);
 				}
 				
 				
