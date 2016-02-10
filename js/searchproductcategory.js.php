@@ -153,8 +153,9 @@ function addProductSPC(fk_product,label) {
 	
 	var related = $('div.arboContainer').attr('related');
 	$(related).val(fk_product);
-	$('#prod_entry_mode_predef').attr('checked','checked');
-	
+	$('#prod_entry_mode_predef').prop('checked',true);
+	$('#prod_entry_mode_predef').click();	
+
 	if(label) {
 		var relatedLabel = $('div.arboContainer').attr('related-label');
 		$(relatedLabel).val(label);
