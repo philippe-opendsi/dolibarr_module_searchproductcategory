@@ -61,7 +61,7 @@ class ActionsSearchProductCategory
 	 */
 	function formAddObjectLine ($parameters, &$object, &$action, $hookmanager) {
 		
-		global $db,$langs,$user,$conf;
+		global $db,$langs,$user,$conf,$inputalsopricewithtax;
 
 		$TContext = explode(':',$parameters['context']);
 
@@ -70,9 +70,17 @@ class ActionsSearchProductCategory
         	
 			if($user->rights->searchproductcategory->user->search) {
         	//Charger les liste des projets de type feuille de temps pas encore facturé
-				$colspan=7;
-				if($conf->margin->enabled)$colspan+=2;
-	
+				$colspan1 = 4;
+				$colspan2 = 4;
+				if (!empty($inputalsopricewithtax)) { $colspan1++; $colspan2++; }
+				if (!empty($conf->global->PRODUCT_USE_UNITS)) $colspan1++;
+				if (!empty($conf->margin->enabled)) 
+				{
+					$colspan1++;
+					if ($user->rights->margins->creer && ! empty($conf->global->DISPLAY_MARGIN_RATES)) $colspan1++;
+					if ($user->rights->margins->creer && ! empty($conf->global->DISPLAY_MARK_RATES)) $colspan1++;
+				}
+				
 	        	$langs->load('searchproductcategory@searchproductcategory');
 
 	        	?><script type="text/javascript">
@@ -80,20 +88,24 @@ class ActionsSearchProductCategory
 	        		var spc_object_id = '<?php echo $object->id ?>';
 	        	</script>
 				<tr class="liste_titre nodrag nodrop">
-					<td colspan="9"><?php echo $langs->trans('SearchByCategory') ?></td>
-					<td></td>
+					<td colspan="<?php echo $colspan1; ?>"><?php echo $langs->trans('SearchByCategory') ?></td>
+					<td align="right"><?php echo $langs->trans('Qty'); ?></td>
+					<td colspan="<?php echo $colspan2; ?>">&nbsp;</td>
 				</tr>
 				<tr class="pair">
-					<td colspan="<?php echo $colspan; ?>">
+					<td colspan="<?php echo $colspan1; ?>">
 						<div id="arboresenceCategoryProduct" spc-role="arbo-multiple">
 							
 						</div>
 					</td>
-					<td valign="middle" align="center">
+					<td class="nobottom" align="right">
 						<input id="qty_spc" type="text" value="1" size="5" class="flat" />
+					</td>
+					<td valign="middle" align="center" colspan="<?php echo $colspan2; ?>">
 						<input id="addline_spc" class="button" type="button" name="addline_timesheet" value="<?php echo $langs->trans('Add') ?>">
 					</td>
 				</tr>
+				
 				<?php				
 			}
 
