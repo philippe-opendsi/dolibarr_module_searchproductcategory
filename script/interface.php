@@ -6,6 +6,7 @@
 	dol_include_once('/product/class/product.class.php');
 	dol_include_once('/comm/propal/class/propal.class.php');
 	dol_include_once('/commande/class/commande.class.php');
+	dol_include_once('/compta/facture/class/facture.class.php');
 	
 	$get=GETPOST('get');
 	$put=GETPOST('put');
