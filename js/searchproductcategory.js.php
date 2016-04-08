@@ -33,13 +33,16 @@ $(document).ready(function() {
 	$('#addline_spc').click(function() {
 		$(this).after('<span class="loading"><?php echo img_picto('', 'working.gif') ?></span>');
 		$(this).hide();
-		TProduct=[];
+		var TProduct={};
+		
 		$('input.checkSPC:checked').each(function(i,item){
-			TProduct.push( $(item).attr('fk_product') );
+			var fk_product = $(item).attr('fk_product');
+			TProduct[fk_product] = fk_product;
 		});
 		
+		
 		$.ajax({
-			url:"<?php echo dol_buildpath('/searchproductcategory/script/interface.php',1) ?>"
+			url:"<?php echo dol_buildpath('/searchproductcategory/script/interface.php',1); ?>"
 			,data:{
 				put:"addline"
 				,TProduct:TProduct
@@ -54,6 +57,7 @@ $(document).ready(function() {
 			document.location.href=document.location.href;
 			
 		});
+		
 	});
 });
 
