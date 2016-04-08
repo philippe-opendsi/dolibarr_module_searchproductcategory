@@ -119,6 +119,14 @@ print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">'
 print '</form>';
 print '</td></tr>';
 
+$var=!$var;
+print '<tr '.$bc[$var].'>';
+print '<td>'.$langs->trans("SPC_DISPLAY_DESC_OF_PRODUCT").'</td>';
+print '<td align="center" width="20">&nbsp;</td>';
+print '<td align="right" width="300">';
+print ajax_constantonoff('SPC_DISPLAY_DESC_OF_PRODUCT');
+print '</td></tr>';
+
 print '</table>';
 
 llxFooter();
