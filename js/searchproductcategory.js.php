@@ -129,7 +129,7 @@ function getArboSPC(fk_parent, container,keyword) {
 			
 			$.each(data.TProduct,function(i,item) {
 				spc_line_class = (spc_line_class == 'even') ? 'odd' : 'even';
-				$li = $('<li class="product '+spc_line_class+'" productid="'+item.id+'"><input type="checkbox" value="1" name="TProductSPCtoAdd['+item.id+']" fk_product="'+item.id+'" class="checkSPC" /> <a class="checkIt" href="javascript:;" onclick="checkProductSPC('+item.id+')" >'+item.label+'</a> <a class="addToForm" href="javascript:;" onclick="addProductSPC('+item.id+',\''+item.label.replace(/\'/g, "&quot;")+'\')"><?php echo img_right($langs->trans('SelectThisProduct')) ?></a></li>');
+				$li = $('<li class="product '+spc_line_class+'" productid="'+item.id+'"><input type="checkbox" value="1" name="TProductSPCtoAdd['+item.id+']" fk_product="'+item.id+'" class="checkSPC" /> <a class="checkIt" href="javascript:;" onclick="checkProductSPC('+item.id+')" >'+item.label+'</a> <a class="addToForm" href="javascript:;" onclick="addProductSPC('+item.id+',\''+item.label.replace(/\'/g, "&quot;")+'\', \''+item.ref+'\')"><?php echo img_right($langs->trans('SelectThisProduct')) ?></a></li>');
 				
 				<?php if ($conf->global->SPC_DISPLAY_DESC_OF_PRODUCT) { ?>
 					var desc = item.description.replace(/'/g, "\\'");
@@ -166,7 +166,7 @@ function checkProductSPC(fk_product) {
 	
 }
 
-function addProductSPC(fk_product,label) {
+function addProductSPC(fk_product,label,ref) {
 	
 	var related = $('div.arboContainer').attr('related');
 	$(related).val(fk_product);
@@ -175,7 +175,10 @@ function addProductSPC(fk_product,label) {
 
 	if(label) {
 		var relatedLabel = $('div.arboContainer').attr('related-label');
-		$(relatedLabel).val(label);
+		if (typeof ref != 'undefined') $(relatedLabel).val(ref);
+		else $(relatedLabel).val(label);
+		
+		$('#idprod').trigger('change');
 	}
 	
 	$pop = $( "div#popSearchProductByCategory" );
