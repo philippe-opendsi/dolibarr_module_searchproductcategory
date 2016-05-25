@@ -147,7 +147,12 @@ function getArboSPC(fk_parent, container,keyword) {
 		
 		$('#arboresenceCategoryProduct').find('a.addToForm').remove();
 		$("div#popSearchProductByCategory").find('input[type=checkbox]').remove();
-		$("div#popSearchProductByCategory").find('a.checkIt').attr('onclick', $("div#popSearchProductByCategory").find('a.addToForm').attr('onclick') );
+		
+		var TCheckIt = $("div#popSearchProductByCategory").find('a.checkIt');
+		for (var j=0; j < TCheckIt.length; j++)
+		{
+			$(TCheckIt[j]).attr('onclick', $(TCheckIt[j]).next('a.addToForm').attr('onclick'));
+		}
 	});
 }
 
