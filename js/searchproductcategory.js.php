@@ -49,6 +49,7 @@ $(document).ready(function() {
 				,object_type:spc_object_type
 				,object_id:spc_object_id
 				,qty:$('#qty_spc').val()
+				<?php if (!empty($conf->global->SUBTOTAL_ALLOW_ADD_LINE_UNDER_TITLE)) { ?>,under_title:$(this).closest('td').children('select.under_title').val()<?php } ?>
 			}
 			,method:'post'
 			,dataType:'json'	
