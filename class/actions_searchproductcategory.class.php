@@ -90,7 +90,7 @@ class ActionsSearchProductCategory
 				<tr class="liste_titre nodrag nodrop">
 					<td colspan="<?php echo $colspan1; ?>"><?php echo $langs->trans('SearchByCategory') ?></td>
 					<td align="right"><?php echo $langs->trans('Qty'); ?></td>
-					<td colspan="<?php echo $colspan2; ?>">&nbsp;</td>
+					<td align="center" colspan="<?php echo $colspan2; ?>">&nbsp;<?php if (!empty($conf->global->SUBTOTAL_ALLOW_ADD_LINE_UNDER_TITLE)) { echo $langs->trans('subtotal_title_to_add_under_title'); } ?></td>
 				</tr>
 				<tr class="pair">
 					<td colspan="<?php echo $colspan1; ?>">
@@ -102,6 +102,11 @@ class ActionsSearchProductCategory
 						<input id="qty_spc" type="text" value="1" size="5" class="flat" />
 					</td>
 					<td valign="middle" align="center" colspan="<?php echo $colspan2; ?>">
+						<?php if (!empty($conf->global->SUBTOTAL_ALLOW_ADD_LINE_UNDER_TITLE)) {
+							dol_include_once('/subtotal/class/subtotal.class.php');
+							$TTitle = TSubtotal::getAllTitleFromDocument($object);
+							echo getHtmlSelectTitle($object);
+						} ?>
 						<input id="addline_spc" class="button" type="button" name="addline_timesheet" value="<?php echo $langs->trans('Add') ?>">
 					</td>
 				</tr>
