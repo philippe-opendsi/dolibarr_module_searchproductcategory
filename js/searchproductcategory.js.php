@@ -55,8 +55,12 @@ $(document).ready(function() {
 			,dataType:'json'	
 		}).done(function(data) {
 			
-			document.location.href=document.location.href;
+			var url = window.location.href;
 			
+			url = url.replace(window.location.hash, "");
+			window.location.href=url;
+			
+			return;
 		});
 		
 	});
