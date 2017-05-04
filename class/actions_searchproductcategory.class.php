@@ -68,7 +68,7 @@ class ActionsSearchProductCategory
 		if (in_array('propalcard',$TContext) || in_array('ordercard',$TContext) || in_array('invoicecard',$TContext)) 
         {
         	
-			if($user->rights->searchproductcategory->user->search) {
+			if(empty($conf->global->SPC_USE_ONLY_POPIN) && $user->rights->searchproductcategory->user->search) {
         	//Charger les liste des projets de type feuille de temps pas encore facturé
 				$colspan1 = 4;
 				$colspan2 = 4;
