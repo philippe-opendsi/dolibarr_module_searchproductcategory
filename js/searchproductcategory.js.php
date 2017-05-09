@@ -34,18 +34,26 @@ $(document).ready(function() {
 		$(this).after('<span class="loading"><?php echo img_picto('', 'working.gif') ?></span>');
 		$(this).hide();
 		var TProduct={};
+		var TProductPrice={};
 		
 		$('input.checkSPC:checked').each(function(i,item){
 			var fk_product = $(item).attr('fk_product');
 			TProduct[fk_product] = fk_product;
 		});
 		
+		<?php if (!empty($conf->global->PRODUIT_MULTIPRICES)) { ?>
+		$('input.radioSPC:checked').each(function(i,item){
+			var priceToUse = $(item).val();
+			TProductPrice[$(item).data('fk-product')] = priceToUse;
+		});
+		<?php } ?>
 		
 		$.ajax({
 			url:"<?php echo dol_buildpath('/searchproductcategory/script/interface.php',1); ?>"
 			,data:{
 				put:"addline"
 				,TProduct:TProduct
+				,TProductPrice:TProductPrice
 				,object_type:spc_object_type
 				,object_id:spc_object_id
 				,qty:$('#qty_spc').val()
@@ -134,7 +142,20 @@ function getArboSPC(fk_parent, container,keyword) {
 			
 			$.each(data.TProduct,function(i,item) {
 				spc_line_class = (spc_line_class == 'even') ? 'odd' : 'even';
-				$li = $('<li class="product '+spc_line_class+'" productid="'+item.id+'"><input type="checkbox" value="1" name="TProductSPCtoAdd['+item.id+']" fk_product="'+item.id+'" class="checkSPC" /> <a class="checkIt" href="javascript:;" onclick="checkProductSPC('+item.id+')" >'+item.label+'</a> <a class="addToForm" href="javascript:;" onclick="addProductSPC('+item.id+',\''+item.label.replace(/\'/g, "&quot;")+'\', \''+item.ref+'\')"><?php echo img_right($langs->trans('SelectThisProduct')) ?></a></li>');
+				
+				var TCheckboxMultiPrice = '';
+				<?php if (!empty($conf->global->PRODUIT_MULTIPRICES)) { ?>
+					for (var p in item.multiprices) {
+						if (item.multiprices_base_type[p] == 'TTC') var priceToUse = parseFloat(item.multiprices_ttc[p]);
+						else var priceToUse = parseFloat(item.multiprices[p]);
+						
+						if (isNaN(priceToUse)) priceToUse = 0;
+						
+						TCheckboxMultiPrice += '<input class="radioSPC" type="radio" name="TProductSPCPriceToAdd['+item.id+']" value="'+priceToUse+'" data-fk-product="'+item.id+'" style="vertical-align:bottom;" /> ' + priceToUse.toFixed(2) + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+					}
+				<?php } ?>
+				
+				$li = $('<li class="product '+spc_line_class+'" productid="'+item.id+'"><input type="checkbox" value="1" name="TProductSPCtoAdd['+item.id+']" fk_product="'+item.id+'" class="checkSPC" /> <a class="checkIt" href="javascript:;" onclick="checkProductSPC('+item.id+')" >'+item.label+'</a> <a class="addToForm" href="javascript:;" onclick="addProductSPC('+item.id+',\''+item.label.replace(/\'/g, "&quot;")+'\', \''+item.ref+'\')"><?php echo img_right($langs->trans('SelectThisProduct')) ?></a> '+TCheckboxMultiPrice+' </li>');
 				
 				<?php if ($conf->global->SPC_DISPLAY_DESC_OF_PRODUCT) { ?>
 					var desc = item.description.replace(/'/g, "\\'");
