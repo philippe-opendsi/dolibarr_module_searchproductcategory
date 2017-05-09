@@ -143,7 +143,7 @@ function getArboSPC(fk_parent, container,keyword) {
 			$.each(data.TProduct,function(i,item) {
 				spc_line_class = (spc_line_class == 'even') ? 'odd' : 'even';
 				
-				var TCheckboxMultiPrice = '';
+				var TRadioboxMultiPrice = '';
 				<?php if (!empty($conf->global->PRODUIT_MULTIPRICES)) { ?>
 					for (var p in item.multiprices) {
 						if (item.multiprices_base_type[p] == 'TTC') var priceToUse = parseFloat(item.multiprices_ttc[p]);
@@ -151,11 +151,11 @@ function getArboSPC(fk_parent, container,keyword) {
 						
 						if (isNaN(priceToUse)) priceToUse = 0;
 						
-						TCheckboxMultiPrice += '<input class="radioSPC" type="radio" name="TProductSPCPriceToAdd['+item.id+']" value="'+priceToUse+'" data-fk-product="'+item.id+'" style="vertical-align:bottom;" /> ' + priceToUse.toFixed(2) + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+						TRadioboxMultiPrice += '<input class="radioSPC" type="radio" name="TProductSPCPriceToAdd['+item.id+']" value="'+priceToUse+'" data-fk-product="'+item.id+'" style="vertical-align:bottom;" /> ' + priceToUse.toFixed(2) + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 					}
 				<?php } ?>
 				
-				$li = $('<li class="product '+spc_line_class+'" productid="'+item.id+'"><input type="checkbox" value="1" name="TProductSPCtoAdd['+item.id+']" fk_product="'+item.id+'" class="checkSPC" /> <a class="checkIt" href="javascript:;" onclick="checkProductSPC('+item.id+')" >'+item.label+'</a> <a class="addToForm" href="javascript:;" onclick="addProductSPC('+item.id+',\''+item.label.replace(/\'/g, "&quot;")+'\', \''+item.ref+'\')"><?php echo img_right($langs->trans('SelectThisProduct')) ?></a> '+TCheckboxMultiPrice+' </li>');
+				$li = $('<li class="product '+spc_line_class+'" productid="'+item.id+'"><input type="checkbox" value="1" name="TProductSPCtoAdd['+item.id+']" fk_product="'+item.id+'" class="checkSPC" /> <a class="checkIt" href="javascript:;" onclick="checkProductSPC('+item.id+')" >'+item.label+'</a> <a class="addToForm" href="javascript:;" onclick="addProductSPC('+item.id+',\''+item.label.replace(/\'/g, "&quot;")+'\', \''+item.ref+'\')"><?php echo img_right($langs->trans('SelectThisProduct')) ?></a> '+TRadioboxMultiPrice+' </li>');
 				
 				<?php if ($conf->global->SPC_DISPLAY_DESC_OF_PRODUCT) { ?>
 					var desc = item.description.replace(/'/g, "\\'");
