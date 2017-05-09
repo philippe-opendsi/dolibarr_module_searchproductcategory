@@ -10,4 +10,4 @@ NothingHere=Pas de sous-catégorie ou de produit
 set_SPC_DO_NOT_LOAD_PARENT_CAT=Ne pas afficher les catégories racine par défaut
 DoASearch=Faites une recherche/Pas de résultat pour votre recherche
 SPC_DISPLAY_DESC_OF_PRODUCT=Afficher une icône qui contient le descriptif du produit sur chaque ligne de produit dans la liste
-SPC_USE_ONLY_POPIN=Afficher que l'icône pour la recherche
+SPC_USE_ONLY_POPIN=Utiliser la recherche uniquement via la popin (fait disparaitre le tableau visible en standard)
