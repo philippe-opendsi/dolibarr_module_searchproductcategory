@@ -34,6 +34,7 @@
 			$object_id=(int)GETPOST('object_id');
 			$qty=(float)GETPOST('qty');
 			$TProduct=GETPOST('TProduct');
+			$TProductPrice=GETPOST('TProductPrice');
 			$txtva=(float)GETPOST('txtva');
 			
 			if(!empty($TProduct)) {
@@ -45,7 +46,11 @@
 					$p=new Product($db);
 					$p->fetch($fk_product);
 					
-					$res = $o->addline($p->description, $p->price, $qty, $txtva,0,0,$fk_product);
+					$price = 0;
+					if (!empty($conf->global->PRODUIT_MULTIPRICES) && !empty($TProductPrice[$fk_product])) $price = price2num($TProductPrice[$fk_product]);
+					if (empty($price)) $price = $p->price;
+					
+					$res = $o->addline($p->description, $price, $qty, $txtva,0,0,$fk_product);
 				}
 				
 				
