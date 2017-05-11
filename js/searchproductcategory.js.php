@@ -8,9 +8,9 @@
 ?>
 var spc_line_class = 'even';
 $(document).ready(function() {
-	$search = $('<span><a href="javascript:;" onclick="openSearchProductByCategory(this)"><?php echo img_picto($langs->trans('SearchByCategory'), 'object_searchproductcategory.png@searchproductcategory') ?></a></span>');
+	$search = $('<span class="searchbycateg_icone"><a href="javascript:;" onclick="openSearchProductByCategory(this)"><?php echo img_picto($langs->trans('SearchByCategory'), 'object_searchproductcategory.png@searchproductcategory') ?></a></span>');
 	
-	if($('input#search_idprod').length>0) {
+	if($('input#search_idprod').length>0 && $('input#search_idprod').next().attr('class') != 'searchbycateg_icone') {
 		
 		$search.find('a').attr('related-label','input#search_idprod');
 		$search.find('a').attr('related','input#idprod');
@@ -18,11 +18,29 @@ $(document).ready(function() {
 		$('input#search_idprod').after($search);
 		
 	}
-	else if($('select#idprod').length>0) {
+	else if($('select#idprod').length>0 && $('select#idprod').next().attr('class') != 'searchbycateg_icone') {
 		
 		$search.find('a').attr('related','select#idprod');
 		$('select#idprod').after($search);
 	
+	}
+	else if ($('#nomenclature_bt_add_product').length > 0 || $('#nomenclature_bt_clone_nomenclature').length > 0)
+	{
+		if ($('#nomenclature_bt_add_product').length > 0)
+		{
+			$search.find('a').attr('related-label','input[id*=search_fk_new_product_]');
+			$search.find('a').attr('related','input[id*=fk_new_product][type=hidden]');
+
+			$('#nomenclature_bt_add_product').before($search.clone());
+		}
+		
+		if ($('#nomenclature_bt_clone_nomenclature').length > 0)
+		{
+			$search.find('a').attr('related-label','input[id*=search_fk_clone_from_product]');
+			$search.find('a').attr('related','input[id*=fk_clone_from_product][type=hidden]');
+
+			$('#nomenclature_bt_clone_nomenclature').before($search.clone());
+		}
 	}
 	else {
 		return false;

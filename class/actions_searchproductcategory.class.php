@@ -118,4 +118,14 @@ class ActionsSearchProductCategory
 
 		return 0;
 	}
+	
+	function addMoreActionsButtons($parameters, &$object, &$action, $hookmanager)
+	{
+		$TContext = explode(':', $parameters['context']);
+		
+		if (in_array('nomenclaturecard', $TContext))
+		{
+			if (GETPOST('json')) echo '<script type="text/javascript" src="'. dol_buildpath('/searchproductcategory/js/searchproductcategory.js.php', 1).'" ></script>' ;
+		}
+	}
 }
