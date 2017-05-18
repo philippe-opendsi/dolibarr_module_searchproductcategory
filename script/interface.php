@@ -65,7 +65,7 @@
 	}
 
 function _products($fk_parent=0) {
-	global $db;
+	global $db,$conf;
 
 	if(empty($fk_parent)) return array();
 	
@@ -73,6 +73,12 @@ function _products($fk_parent=0) {
 	$parent->fetch($fk_parent);
 	
 	$TProd = $parent->getObjectsInCateg('product');
+	
+	if (!empty($conf->global->SPC_DISPLAY_DESC_OF_PRODUCT))
+	{
+		require_once DOL_DOCUMENT_ROOT.'/core/lib/functions.lib.php';
+		foreach ($TProd as &$o) $o->description = dol_html_entity_decode($o->description, ENT_QUOTES);
+	}
 	
 	return $TProd;
 }

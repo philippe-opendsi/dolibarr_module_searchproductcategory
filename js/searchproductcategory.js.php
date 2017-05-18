@@ -8,9 +8,9 @@
 ?>
 var spc_line_class = 'even';
 $(document).ready(function() {
-	$search = $('<span><a href="javascript:;" onclick="openSearchProductByCategory(this)"><?php echo img_picto($langs->trans('SearchByCategory'), 'object_searchproductcategory.png@searchproductcategory') ?></a></span>');
+	$search = $('<span class="searchbycateg_icone"><a href="javascript:;" onclick="openSearchProductByCategory(this)"><?php echo img_picto($langs->trans('SearchByCategory'), 'object_searchproductcategory.png@searchproductcategory') ?></a></span>');
 	
-	if($('input#search_idprod').length>0) {
+	if($('input#search_idprod').length>0 && $('input#search_idprod').next().attr('class') != 'searchbycateg_icone') {
 		
 		$search.find('a').attr('related-label','input#search_idprod');
 		$search.find('a').attr('related','input#idprod');
@@ -18,11 +18,29 @@ $(document).ready(function() {
 		$('input#search_idprod').after($search);
 		
 	}
-	else if($('select#idprod').length>0) {
+	else if($('select#idprod').length>0 && $('select#idprod').next().attr('class') != 'searchbycateg_icone') {
 		
 		$search.find('a').attr('related','select#idprod');
 		$('select#idprod').after($search);
 	
+	}
+	else if ($('#nomenclature_bt_add_product').length > 0 || $('#nomenclature_bt_clone_nomenclature').length > 0)
+	{
+		if ($('#nomenclature_bt_add_product').length > 0)
+		{
+			$search.find('a').attr('related-label','input[id*=search_fk_new_product_]');
+			$search.find('a').attr('related','input[id*=fk_new_product][type=hidden]');
+
+			$('#nomenclature_bt_add_product').before($search.clone());
+		}
+		
+		if ($('#nomenclature_bt_clone_nomenclature').length > 0)
+		{
+			$search.find('a').attr('related-label','input[id*=search_fk_clone_from_product]');
+			$search.find('a').attr('related','input[id*=fk_clone_from_product][type=hidden]');
+
+			$('#nomenclature_bt_clone_nomenclature').before($search.clone());
+		}
 	}
 	else {
 		return false;
@@ -157,7 +175,7 @@ function getArboSPC(fk_parent, container,keyword) {
 				
 				$li = $('<li class="product '+spc_line_class+'" productid="'+item.id+'"><input type="checkbox" value="1" name="TProductSPCtoAdd['+item.id+']" fk_product="'+item.id+'" class="checkSPC" /> <a class="checkIt" href="javascript:;" onclick="checkProductSPC('+item.id+')" >'+item.label+'</a> <a class="addToForm" href="javascript:;" onclick="addProductSPC('+item.id+',\''+item.label.replace(/\'/g, "&quot;")+'\', \''+item.ref+'\')"><?php echo img_right($langs->trans('SelectThisProduct')) ?></a> '+TRadioboxMultiPrice+' </li>');
 				
-				<?php if ($conf->global->SPC_DISPLAY_DESC_OF_PRODUCT) { ?>
+				<?php if (!empty($conf->global->SPC_DISPLAY_DESC_OF_PRODUCT)) { ?>
 					var desc = item.description.replace(/'/g, "\\'");
 					var bubble = $("<?php echo addslashes(img_help()); ?>");
 					bubble.attr('title', desc);
