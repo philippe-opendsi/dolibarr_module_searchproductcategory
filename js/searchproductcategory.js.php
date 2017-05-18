@@ -175,7 +175,7 @@ function getArboSPC(fk_parent, container,keyword) {
 				
 				$li = $('<li class="product '+spc_line_class+'" productid="'+item.id+'"><input type="checkbox" value="1" name="TProductSPCtoAdd['+item.id+']" fk_product="'+item.id+'" class="checkSPC" /> <a class="checkIt" href="javascript:;" onclick="checkProductSPC('+item.id+')" >'+item.label+'</a> <a class="addToForm" href="javascript:;" onclick="addProductSPC('+item.id+',\''+item.label.replace(/\'/g, "&quot;")+'\', \''+item.ref+'\')"><?php echo img_right($langs->trans('SelectThisProduct')) ?></a> '+TRadioboxMultiPrice+' </li>');
 				
-				<?php if ($conf->global->SPC_DISPLAY_DESC_OF_PRODUCT) { ?>
+				<?php if (!empty($conf->global->SPC_DISPLAY_DESC_OF_PRODUCT)) { ?>
 					var desc = item.description.replace(/'/g, "\\'");
 					var bubble = $("<?php echo addslashes(img_help()); ?>");
 					bubble.attr('title', desc);
