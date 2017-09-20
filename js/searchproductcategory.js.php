@@ -136,6 +136,7 @@ function getArboSPC(fk_parent, container,keyword) {
 			get:"categories"
 			,fk_parent:fk_parent
 			,keyword:keyword
+			,fk_soc:spc_fk_soc
 		}
 		,dataType:'json'	
 	}).done(function(data) {
@@ -169,7 +170,9 @@ function getArboSPC(fk_parent, container,keyword) {
 						
 						if (isNaN(priceToUse)) priceToUse = 0;
 						
-						TRadioboxMultiPrice += '<input class="radioSPC" type="radio" name="TProductSPCPriceToAdd['+item.id+']" value="'+priceToUse+'" data-fk-product="'+item.id+'" style="vertical-align:bottom;" /> ' + priceToUse.toFixed(2) + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+						var checked = false;
+						if (data.default_price_level == p) checked = true;
+						TRadioboxMultiPrice += '<span class="multiprice"><input '+(checked ? "checked" : "")+' class="radioSPC" type="radio" name="TProductSPCPriceToAdd['+item.id+']" value="'+priceToUse+'" data-fk-product="'+item.id+'" style="vertical-align:bottom;" /> ' + priceToUse.toFixed(2) + '</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 					}
 				<?php } ?>
 				
@@ -190,7 +193,7 @@ function getArboSPC(fk_parent, container,keyword) {
 		container.append($ul);
 		
 		$('#arboresenceCategoryProduct').find('a.addToForm').remove();
-		$("div#popSearchProductByCategory").find('input[type=checkbox]').remove();
+		$("div#popSearchProductByCategory").find('input[type=checkbox], span.multiprice').remove();
 		
 		var TCheckIt = $("div#popSearchProductByCategory").find('a.checkIt');
 		for (var j=0; j < TCheckIt.length; j++)
