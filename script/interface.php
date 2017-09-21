@@ -15,12 +15,25 @@
 		case 'categories':
 			$fk_parent = (int)GETPOST('fk_parent');
 			$keyword= GETPOST('keyword');
-			
+			$fk_soc = GETPOST('fk_soc');
 			
 			$Tab =array(
 				'TCategory'=>_categories($fk_parent, $keyword)
 				,'TProduct'=>_products($fk_parent)
 			);
+			
+			if (!empty($conf->global->PRODUIT_MULTIPRICES))
+			{
+				require_once DOL_DOCUMENT_ROOT.'/societe/class/societe.class.php';
+				$societe = new Societe($db);
+				$societe->fetch($fk_soc);
+				
+				$Tab['default_price_level'] = 1;
+				if ($societe->id > 0)
+				{
+					$Tab['default_price_level'] = $societe->price_level;
+				}
+			}
 			
 			__out($Tab,'json');
 					

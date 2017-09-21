@@ -86,6 +86,7 @@ class ActionsSearchProductCategory
 	        	?><script type="text/javascript">
 	        		var spc_object_type = '<?php echo $object->element ?>';
 	        		var spc_object_id = '<?php echo $object->id ?>';
+	        		var spc_fk_soc = '<?php echo $object->socid; ?>';
 	        	</script>
 				<tr class="liste_titre nodrag nodrop">
 					<td colspan="<?php echo $colspan1; ?>"><?php echo $langs->trans('SearchByCategory') ?></td>
