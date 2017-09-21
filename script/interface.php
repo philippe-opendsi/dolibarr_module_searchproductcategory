@@ -28,6 +28,7 @@
 				$societe = new Societe($db);
 				$societe->fetch($fk_soc);
 				
+				$Tab['default_price_level'] = 1;
 				if ($societe->id > 0)
 				{
 					$Tab['default_price_level'] = $societe->price_level;
