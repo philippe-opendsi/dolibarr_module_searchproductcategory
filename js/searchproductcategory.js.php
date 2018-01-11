@@ -180,8 +180,18 @@ function getArboSPC(fk_parent, container,keyword) {
 				
 				<?php if (!empty($conf->global->SPC_DISPLAY_DESC_OF_PRODUCT)) { ?>
 					var desc = item.description.replace(/'/g, "\\'");
+				
+				<?php 	if(!empty($conf->global->PRODUCT_USE_UNITS)){ ?>
+						desc = desc + "\n Unit : "+item.unit;
+				<?php } ?>
 					var bubble = $("<?php echo addslashes(img_help()); ?>");
 					bubble.attr('title', desc);
+					
+					$li.append(bubble);
+				<?php } else if (!empty($conf->global->PRODUCT_USE_UNITS)) { ?>
+					var unit = "Unit : "+item.unit;
+					var bubble = $("<?php echo addslashes(img_help()); ?>");
+					bubble.attr('title', unit);
 					$li.append(bubble);
 				<?php } ?>
 				

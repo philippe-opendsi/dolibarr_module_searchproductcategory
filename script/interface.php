@@ -62,8 +62,16 @@
 					$price = 0;
 					if (!empty($conf->global->PRODUIT_MULTIPRICES) && !empty($TProductPrice[$fk_product])) $price = price2num($TProductPrice[$fk_product]);
 					if (empty($price)) $price = $p->price;
+					if($object_type == 'facture'){
+						$res = $o->addline($p->description, $price, $qty, $txtva,0,0,$fk_product, 0, '', '', 0, 0, '', 'HT',0, Facture::TYPE_STANDARD, -1, 0, '',0, 0, null, 0, '', 0, 100, '', $p->fk_unit , 0);
+					}elseif($object_type == 'propal'){
+						$res = $o->addline($p->description, $price, $qty, $txtva,0,0,$fk_product,0.0, 'HT', 0.0,0, 0, -1, 0,0, 0, 0, '','', '',0, $p->fk_unit);
+					}elseif($object_type == 'commande'){
+						$res = $o->addline($p->description, $price, $qty, $txtva,0,0,$fk_product, 0, 0, 0, 'HT', 0, '', '', 0, -1, 0, 0, null, 0, '',0, $p->fk_unit);
+					}else{
+						$res = $o->addline($p->description, $price, $qty, $txtva,0,0,$fk_product);
+					}
 					
-					$res = $o->addline($p->description, $price, $qty, $txtva,0,0,$fk_product);
 				}
 				
 				
@@ -78,7 +86,7 @@
 	}
 
 function _products($fk_parent=0) {
-	global $db,$conf;
+	global $db,$conf,$langs;
 
 	if(empty($fk_parent)) return array();
 	
@@ -91,6 +99,12 @@ function _products($fk_parent=0) {
 	{
 		require_once DOL_DOCUMENT_ROOT.'/core/lib/functions.lib.php';
 		foreach ($TProd as &$o) $o->description = dol_html_entity_decode($o->description, ENT_QUOTES);
+	}
+	if(!empty($conf->global->PRODUCT_USE_UNITS)){
+		foreach ($TProd as &$o){
+			$unit = $o->getLabelOfUnit();
+			$o->unit = $langs->trans($unit);
+		}
 	}
 	
 	return $TProd;
