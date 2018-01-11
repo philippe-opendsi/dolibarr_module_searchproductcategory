@@ -86,7 +86,7 @@
 	}
 
 function _products($fk_parent=0) {
-	global $db,$conf;
+	global $db,$conf,$langs;
 
 	if(empty($fk_parent)) return array();
 	
@@ -99,6 +99,12 @@ function _products($fk_parent=0) {
 	{
 		require_once DOL_DOCUMENT_ROOT.'/core/lib/functions.lib.php';
 		foreach ($TProd as &$o) $o->description = dol_html_entity_decode($o->description, ENT_QUOTES);
+	}
+	if(!empty($conf->global->PRODUCT_USE_UNITS)){
+		foreach ($TProd as &$o){
+			$unit = $o->getLabelOfUnit();
+			$o->unit = $langs->trans($unit);
+		}
 	}
 	
 	return $TProd;
