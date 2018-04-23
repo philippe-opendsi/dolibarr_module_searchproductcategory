@@ -58,7 +58,7 @@
 				foreach($TProduct as $fk_product) {
 					$p=new Product($db);
 					$p->fetch($fk_product);
-					
+					$txtva=$p->tva_tx;
 					$price = 0;
 					if (!empty($conf->global->PRODUIT_MULTIPRICES) && !empty($TProductPrice[$fk_product])) $price = price2num($TProductPrice[$fk_product]);
 					if (empty($price)) $price = $p->price;
